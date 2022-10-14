@@ -1,26 +1,42 @@
 const path = require('path');
-
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 console.log('STARTING WEBPACK!!!!');
 
 module.exports = {
-  entry: './src/data.js',
+  entry: './index.js', 
+  mode: "development",
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'my-first-webpack.bundle.js',
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css",
+    }),
+  ],
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          // Creates `style` nodes from JS strings
-          "style-loader",
-          // Translates CSS into CommonJS
+          MiniCssExtractPlugin.loader,
           "css-loader",
-          // Compiles Sass to CSS
+          "postcss-loader",
           "sass-loader",
         ],
       },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
     ],
+  },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    compress: true,
+    port: 9000,
   },
 };
