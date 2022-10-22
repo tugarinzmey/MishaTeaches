@@ -1,17 +1,16 @@
-const scss = require('rollup-plugin-scss');
+import scss from "rollup-plugin-scss";
 
 export default {
-    input: "./src/index.js",
-    output: {
-      file: "./bundle/main.min.js",
-      format: "esm", 
-    },
-    plugins: [
-      scss({
-        output: "bundle.css",
-        include:  ['/**/*.css', '/**/*.scss', '/**/*.sass'],
-        sourceMap: true,
-        failOnError: true,
-      }),
-    ],
-  };
+  input: "./index.js",
+  output: {
+    file: "./dist/rollupmain.min.js",
+    format: "esm",
+  },
+  plugins: [
+    scss({
+      output: "./dist/rollupstyle.css",
+      failOnError: true,
+      runtime: require("sass"),
+    }),
+  ],
+};
